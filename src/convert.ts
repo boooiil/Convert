@@ -113,12 +113,7 @@ class Ticker {
                 }
 
                 // If the file has finished processing, add it to the completed queue.
-                if (media.activity === Process.FINISHED ||
-                    media.activity === Process.FAILED ||
-                    media.activity === Process.FAILED_CODEC ||
-                    media.activity === Process.FAILED_HARDWARE ||
-                    media.activity === Process.FAILED_PERMISSIONS ||
-                    media.activity === Process.FAILED_SYSTEM) {
+                if (/finished|failed/i.test(media.activity)) {
 
                     media.ended = Date.now()
 
@@ -956,9 +951,19 @@ class Media {
 
         return new Promise((resolve, reject) => {
 
-            child.exec(`ffprobe -hide_banner -i ${this.file.path_rename}`, (err, stdout, stderr) => {
+            child.exec(`ffprobe -hide_banner -i "${this.file.path_rename}"`, (err, stdout, stderr) => {
 
-                if (err) throw err
+                if (err) {
+
+                    if (/header parsing failed/im.test(err.message)) {
+
+                        this.activity = Process.FAILED_FILE
+
+                    }
+
+                    else throw err
+
+                }
                 //if (stderr) throw stderr
 
                 let data = stderr.toString()
@@ -1025,15 +1030,19 @@ class Media {
 
             }).on('close', () => {
 
-                let format = container.formats[container.appEncodingDecision.quality]
+                if (/failed/i.test(this.activity)) resolve(null)
+                else {
 
-                this.video.converted_width = `${format.width}`
-                this.video.converted_height = `${MediaFormat.getResolution(this.video.height, this.video.width, format.width)}`
-                this.video.converted_resolution = this.video.converted_width + ':' + this.video.converted_height
+                    let format = container.formats[container.appEncodingDecision.quality]
 
-                this.activity = Process.WAITING_CONVERT
-                resolve(null)
+                    this.video.converted_width = `${format.width}`
+                    this.video.converted_height = `${MediaFormat.getResolution(this.video.height, this.video.width, format.width)}`
+                    this.video.converted_resolution = this.video.converted_width + ':' + this.video.converted_height
 
+                    this.activity = Process.WAITING_CONVERT
+                    resolve(null)
+
+                }
 
             })
 
@@ -1698,6 +1707,7 @@ const enum Process {
     CONVERT = 'convert',
     FAILED = 'failed',
     FAILED_CODEC = 'failed_codec',
+    FAILED_FILE = 'failed_file',
     FAILED_HARDWARE = 'failed_hardware',
     FAILED_PERMISSIONS = 'failed_permissions',
     FAILED_SYSTEM = 'failed_system',
