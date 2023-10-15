@@ -303,7 +303,7 @@ class Container {
             2.2,
             1920,
             1080,
-            '1920:878',
+            '1920:870',
             '1920:1080'
         ),
         '1080pn': new MediaFormat(
@@ -369,7 +369,7 @@ class Container {
             0.8,
             1138,
             640,
-            '854:640',
+            '854:720',
             '1138:640'
         )
     }
@@ -826,7 +826,7 @@ class UserArguments {
                         container.appEncodingDecision.startBeginning = process.argv[index + 1]
                         break
 
-                    case '-r':
+                    case '-tr':
                     case '--trim':
                         container.appEncodingDecision.trim = process.argv[index + 1]
                         break
@@ -841,7 +841,7 @@ class UserArguments {
                         container.appEncodingDecision.useConstrain = true
                         break
 
-                    case '-V':
+                    case '-v':
                     case '--validate':
                         container.appEncodingDecision.validate = true
                         break
