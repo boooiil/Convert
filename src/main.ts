@@ -1,8 +1,5 @@
 import { Container } from 'application/Container'
 import { Ticker } from 'application/Ticker'
-import { Log } from 'logging/Log'
-
-let logger: Log = null
 /**
  * Because we are using hardware specific encoders,
  * we will need to get whether the user wants to use these encoders.
@@ -22,8 +19,6 @@ let logger: Log = null
  */
 
 async function main() {
-
-    logger = new Log()
 
     const container = new Container()
 
