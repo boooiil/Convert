@@ -1,0 +1,27 @@
+{
+  "name": "convert",
+  "version": "1.0.0",
+  "description": "Script to encode media.",
+  "devDependencies": {
+    "@types/node": "^20.5.1",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.6.2"
+  },
+  "scripts": {
+    "start-convert": "ts-node-dev src/convert.ts -a 2 -q 720p",
+    "test-convert": "npm run test-convert-copy && cd test && ts-node-dev convert.ts -a 2 -q 720p debug",
+    "test-convert-copy": "xcopy src test /Y",
+    "prebuild": "eslint --fix",
+    "prestart": "npm run build",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "boobot"
+  ],
+  "author": "boooiil",
+  "license": "ISC"
+}
