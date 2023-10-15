@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start-convert": "ts-node-dev src/convert.ts -a 2 -q 720p",
-    "test-convert": "npm run test-convert-copy && cd test && ts-node-dev convert.ts -a 2 -q 720p debug",
+    "test-convert": "npm run test-convert-copy && cd test && ts-node-dev convert.ts -a 2 -q 720p -d",
     "test-convert-copy": "xcopy src test /Y",
     "prebuild": "eslint --fix",
     "prestart": "npm run build",
