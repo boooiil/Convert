@@ -37,6 +37,8 @@ export class ApplicationEncodingDecision {
     useHardwareDecode: boolean = true
     /** Use hardware encode */
     useHardwareEncode: boolean = false
+    /** Overwrite existing file */
+    overwrite: boolean = false
 
     constructor() { }
 
