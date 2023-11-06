@@ -2,7 +2,7 @@ import { writeFileSync } from 'fs'
 import { LogColor } from 'logging/LogColor'
 import { Container } from './Container'
 import { Display } from './Display'
-import { Process } from './Process'
+import { Activity } from './Activity'
 
 /**
  * This class runs the base of the application. The current running conversion count is checked against
@@ -42,7 +42,7 @@ export class Ticker {
 
                 let media = this.container.pending[0]
 
-                if (!media || media.activity != Process.WAITING) {
+                if (!media || media.activity != Activity.WAITING) {
 
                     if (current_amount === 0) {
 
@@ -60,7 +60,7 @@ export class Ticker {
                 }
                 else {
 
-                    media.activity = Process.WAITING_STATISTICS
+                    media.activity = Activity.WAITING_STATISTICS
                     media.started = Date.now()
 
                     this.container.converting[media.name] = this.container.pending.shift()
@@ -86,10 +86,10 @@ export class Ticker {
                 // If the file is not being processed, spawn an instance for it.
                 if (!media.isProcessing()) {
 
-                    if (media.activity === Process.WAITING_STATISTICS) media.doStatistics(this.container)
+                    if (media.activity === Activity.WAITING_STATISTICS) media.doStatistics(this.container)
                     //if (media.activity.includes('Extracting')) spawnExtractionInstance(media)
-                    if (media.activity === Process.WAITING_CONVERT) media.doConvert()
-                    if (media.activity === Process.WAITING_VALIDATE) media.doValidate()
+                    if (media.activity === Activity.WAITING_CONVERT) media.doConvert(this.container)
+                    if (media.activity === Activity.WAITING_VALIDATE) media.doValidate()
 
                 }
 

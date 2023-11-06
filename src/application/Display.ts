@@ -2,7 +2,7 @@ import { time } from 'utils/Time'
 import { LogColor } from 'logging/LogColor'
 import { truncateString } from 'utils/Strings'
 import { Container } from './Container'
-import { Process } from './Process'
+import { Activity } from './Activity'
 
 /**
  * This class handles the logging of messages to the console pertaining to the current
@@ -78,7 +78,7 @@ export class Display {
             let file_name = `${ob + LogColor.fgBlue('FILE') + cb} ${LogColor.fgGray(truncateString(media.file.name_modified))}`
             let activity = `${ob + LogColor.fgBlue('STATUS') + cb} ${LogColor.fgGray(media.activity)}`
 
-            if (media.activity === Process.WAITING) {
+            if (media.activity === Activity.WAITING) {
 
                 return this.container.logger.sendBuffer(LogColor.none, buffer_len, `${file_name} ${activity}`)
 
