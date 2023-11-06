@@ -1,7 +1,7 @@
 /**
  * Enum for the various encoding processes.
  */
-export const enum Process {
+export const enum Activity {
     CONVERT = 'convert',
     FAILED = 'failed',
     FAILED_CODEC = 'failed_codec',
