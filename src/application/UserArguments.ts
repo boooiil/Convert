@@ -36,6 +36,7 @@ export class UserArguments {
 
                         if (container.userCapabilities.supportedEncoders.includes(process.argv[index + 1])) {
                             container.appEncodingDecision.wantedEncoder = process.argv[index + 1]
+                            container.appEncodingDecision.runningEncoder = process.argv[index + 1]
                         }
                         else {
                             this.invalid(argument)
@@ -125,6 +126,10 @@ export class UserArguments {
                     case '--hardwareDecode':
                         container.appEncodingDecision.useHardwareDecode = true
                         break
+
+                    case '-o':
+                    case '--overwrite':
+                        container.appEncodingDecision.overwrite = true
 
                     default:
                         this.invalid(argument)
