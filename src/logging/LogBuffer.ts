@@ -4,9 +4,9 @@
 export class LogBuffer {
 
     /** Current amount of messages in the buffer */
-    current: number
+    #current: number
     /** Maximum amount of messages in the buffer */
-    max: number
+    readonly max: number
 
     /** The line to output */
     line: string = ''
@@ -17,7 +17,7 @@ export class LogBuffer {
      */
     constructor(max: number) {
 
-        this.current = 0
+        this.#current = 0
         this.max = max
 
     }
@@ -28,8 +28,11 @@ export class LogBuffer {
      */
     addLine(line: string): void {
 
+        if (this.#current >= this.max)
+            throw new Error('LogBuffer overflow')
+
         this.line += line + '\n'
-        this.current++
+        this.#current++
 
     }
 
@@ -39,7 +42,7 @@ export class LogBuffer {
      */
     isFull(): boolean {
 
-        return this.current >= this.max
+        return this.#current >= this.max
 
     }
 
