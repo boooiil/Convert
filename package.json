@@ -12,10 +12,12 @@
     "tslib": "^2.6.2"
   },
   "scripts": {
+    "release": "npm run prebuild && npm run test-convert",
     "start-convert": "ts-node-dev src/convert.ts -a 2 -q 720p",
-    "test-convert": "npm run esbuild && npm run test-convert-copy && cd test && node convert.js -a 2 -q 720p -d",
+    "test-convert": "npm run esbuild && npm run test-convert-copy && cd test && node convert.js -a 2 -q 720p -d -o",
     "test-convert-copy": "xcopy dist test /Y",
-    "esbuild": "esbuild src/main.ts --minify --bundle --platform=node --outfile=dist/convert.js",
+    "esbuild": "esbuild src/main.ts --bundle --platform=node --outfile=dist/convert.js",
+    "esbuild-min": "esbuild src/main.ts --minify --bundle --platform=node --outfile=dist/convert.js",
     "prebuild": "eslint --fix",
     "prestart": "npm run build",
     "build": "tsc",
