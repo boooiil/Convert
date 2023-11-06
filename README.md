@@ -33,7 +33,10 @@ Options:
    Display this help message.
 
 -hwe, --hardwareEncode
-    Use hardware encoding.
+   Use hardware encoding.
+
+-o, --overwrite
+   Overwrite existing encoded file
 
 -q, --quality <number>p
    Resolution of the media to convert.
@@ -42,13 +45,13 @@ Options:
    Skip the beginning by specified amount of time.
 
 -t, --tune <string>
-    One of the ffmpeg tune profiles
+   One of the ffmpeg tune profiles
 
 -tr, --trim <hh:mm:ss,hh:mm:ss>
    Trim the media.
 
 -v, --validate <string>
-    Override the validation directory
+   Override the validation directory
 
 ```
 
