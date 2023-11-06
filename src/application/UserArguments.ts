@@ -2,6 +2,7 @@ import { help } from 'utils/Help'
 import { Container } from './Container'
 import { LogColor } from 'logging/LogColor'
 import { Log } from 'logging/Log'
+import { MediaDefinedFormat } from 'media/MediaDefinedFormat'
 
 /**
  * This class handles parsing of user arguments.
@@ -45,7 +46,7 @@ export class UserArguments {
                     case '-q':
                     case '--quality':
 
-                        if (container.formats[process.argv[index + 1]]) {
+                        if (MediaDefinedFormat.formats[process.argv[index + 1]]) {
 
                             container.appEncodingDecision.quality = process.argv[index + 1]
                             break
@@ -54,7 +55,7 @@ export class UserArguments {
 
                         else {
 
-                            container.addCustomFormat(parseInt(process.argv[index + 1].replace('p', '')))
+                            MediaDefinedFormat.addCustomFormat(parseInt(process.argv[index + 1].replace('p', '')))
 
                         }
 
