@@ -96,7 +96,7 @@ Resolutions:
         HEIGHT: 1080
         CROP: 1920:800 (12:5)
 
-     1080pn (Traditional Netflix Cropping)
+     1080pn (Traditional TV/Netflix Cropping)
         CRF: 24
         BITRATE: 2M
         MIN: 1.6M
@@ -123,7 +123,7 @@ Resolutions:
         HEIGHT: 720
         CROP: 1280:534 (12:5)
 
-     720pn (Traditional Netflix Cropping)
+     720pn (Traditional TV/Netflix Cropping)
         CRF: 24
         BITRATE: 1.4M
         MIN: 1.2M
