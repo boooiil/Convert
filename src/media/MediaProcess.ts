@@ -2,6 +2,8 @@ import { Container } from 'application/Container'
 import * as child from 'child_process'
 import { Media } from './Media'
 import { Activity } from 'application/Activity'
+import { Log } from 'logging/Log'
+import { LogColor } from 'logging/LogColor'
 
 export class MediaProcess {
 
@@ -24,6 +26,7 @@ export class MediaProcess {
 
     async stop(): Promise<void> {
         if (this.hasChildProcess()) {
+            new Log().send(LogColor.fgRed, 'Killing process: ', this.media.file.name_modified)
             this.child.kill()
         }
     }
