@@ -163,37 +163,37 @@ Resolutions:
 ```
 Encoders:
    NVIDIA:
-        AV1_NVENC
-        HEVC_NVENC
+        AV1_NVENC (RTX 4000 OR NEWER)
+        HEVC_NVENC (GTX 600 OR NEWER)
         H264_NVENC
     
     AMD:
-        AV1_AMF
-        HEVC_AMF
+        AV1_AMF (RX 7000 OR NEWER)
+        HEVC_AMF (CARRIZO/RX 480 OR NEWER)
         H264_AMF
 
     Intel:
-        AV1_QSV
-        HEVC_QSV
+        AV1_QSV (ARC 300 OR NEWER)
+        HEVC_QSV (HD 500/ARC 300 OR NEWER)
         H264_QSV
 
     Software:
-        AV1
-        HEVC
+        AV1 (NOT RECOMMENDED)
+        HEVC (NEWER i5/R5 RECOMMENDED)
         H264
 ```
 
 ```
 Hardware Accelerators:
    NVIDIA:
-        CUDA
+        CUDA (GPU MUST SUPPORT INPUT VIDEO CODEC)
 
     AMD:
-        AMF
+        AMF (APU/GPU MUST SUPPORT INPUT VIDEO CODEC)
 
     Intel:
-        QSV
+        QSV (IGPU/GPU MUST SUPPORT INPUT VIDEO CODEC)
 
     Unused:
-        VULKAN
+        VULKAN (NOT TESTED)
 ```
