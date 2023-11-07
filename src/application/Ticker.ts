@@ -89,7 +89,7 @@ export class Ticker {
                     if (media.activity === Activity.WAITING_STATISTICS) media.doStatistics(this.container)
                     //if (media.activity.includes('Extracting')) spawnExtractionInstance(media)
                     if (media.activity === Activity.WAITING_CONVERT) media.doConvert(this.container)
-                    if (media.activity === Activity.WAITING_VALIDATE) media.doValidate()
+                    if (media.activity === Activity.WAITING_VALIDATE) media.doValidate(this.container)
 
                 }
 
@@ -108,9 +108,6 @@ export class Ticker {
 
             if (this.container.debug.toggle) this.display.printDebug()
             else this.display.print()
-
-            //console.log(this.container.converting)
-            //console.log(this.container.pending)
 
         }, 1000)
 
