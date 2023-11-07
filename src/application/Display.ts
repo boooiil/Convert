@@ -60,7 +60,7 @@ export class Display {
             let bitrate = `${ob + LogColor.fgBlue('BIT') + cb} ${LogColor.fgGray(media.working.bitrate.toString())}`
             let cq = `${ob + LogColor.fgBlue('QUAL') + cb} ${LogColor.fgGray(Math.trunc((media.video.crf / media.working.quality) * 100).toString())}%`
             let speed = `${ob + LogColor.fgBlue('SPEED') + cb} ${LogColor.fgGray((Math.trunc((media_fps / media.video.fps) * 100) / 100).toString())}`
-            let eta = `${ob + LogColor.fgBlue('ETA') + cb} ${LogColor.fgGray(time(Math.ceil((total_frames - completed_frames) / media_fps), true))}`
+            let eta = `${ob + LogColor.fgBlue('ETA') + cb} ${LogColor.fgGray(time((Math.ceil((total_frames - completed_frames) / media_fps) * 1000), true))}`
 
             let activity = `${ob + LogColor.fgBlue('ACT') + cb} ${LogColor.fgGray(media.activity)}`
             let started = `${ob + LogColor.fgBlue('START') + cb} ${LogColor.fgGray(time(media.started, null))}`
