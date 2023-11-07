@@ -23,7 +23,7 @@ export class MediaProcessConversion extends MediaProcess {
 
                 data = data.toString()
 
-                if (this.container.debug.toggle) console.log(data)
+                //if (this.container.debug.toggle) console.log(data)
 
                 // Return fail IF:
                 // 1&2. Encode fails to find a device
@@ -58,7 +58,7 @@ export class MediaProcessConversion extends MediaProcess {
 
                 else if (/no such file/ig.test(data)) {
 
-                    return resolve(Activity.FAILED_FILE)
+                    return resolve(Activity.FAILED_FILE_MISSING)
                 }
 
                 else {
@@ -74,7 +74,7 @@ export class MediaProcessConversion extends MediaProcess {
                         bitrate = bitrate ? bitrate[0].trim() : 0
                         size = size ? size[0].trim() : 0
 
-                        this.media.working.completed_frames = data.match(/(?<=frame=)(.*)(?=fps)/g)[0].trim() * 1000
+                        this.media.working.completed_frames = data.match(/(?<=frame=)(.*)(?=fps)/g)[0].trim() //* 1000
                         this.media.working.fps = Number(data.match(/(?<=fps=)(.*)(?= q)/g)[0])
                         this.media.working.quality = Number(quality)
                         this.media.working.bitrate = Number(bitrate)
@@ -87,13 +87,8 @@ export class MediaProcessConversion extends MediaProcess {
 
             this.child.on('error', (err) => {
 
-                if (/header parsing failed/im.test(err.message)) {
-
-                    return resolve(Activity.FAILED_FILE)
-
-                }
-
-                else throw err
+                console.log('****----**** WAS ERROR')
+                throw err
 
             })
 
