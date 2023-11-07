@@ -23,7 +23,7 @@ export class MediaProcessConversion extends MediaProcess {
 
                 data = data.toString()
 
-                console.log(data)
+                if (this.container.debug.toggle) console.log(data)
 
                 // Return fail IF:
                 // 1&2. Encode fails to find a device
