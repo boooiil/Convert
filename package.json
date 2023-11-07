@@ -12,8 +12,8 @@
     "tslib": "^2.6.2"
   },
   "scripts": {
-    "test-convert": "npm run bundle-move-test && cd test && node convert.js -a 2 -q 720p -d -o",
-    "bundle-move-test": "npm run bundle && npm run copy-outfile-test",
+    "test-convert": "npm run bundle-copy-test && cd test && node convert.js -a 2 -q 720p -d -o",
+    "bundle-copy-test": "npm run bundle && npm run copy-outfile-test",
     "copy-outfile-test": "xcopy dist test /Y",
     "bundle": "esbuild src/main.ts --bundle --platform=node --outfile=dist/convert.js",
     "bundle-min": "esbuild src/main.ts --minify --bundle --platform=node --outfile=dist/convert.js"
