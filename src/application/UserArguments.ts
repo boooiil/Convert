@@ -57,6 +57,8 @@ export class UserArguments {
                         else {
 
                             MediaDefinedFormat.addCustomFormat(parseInt(process.argv[index + 1].replace('p', '')))
+                            container.appEncodingDecision.quality = process.argv[index + 1]
+                            break
 
                         }
 
