@@ -130,6 +130,7 @@ export class UserArguments {
                     case '-o':
                     case '--overwrite':
                         container.appEncodingDecision.overwrite = true
+                        break
 
                     default:
                         this.invalid(argument)
