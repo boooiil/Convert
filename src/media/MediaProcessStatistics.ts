@@ -40,11 +40,16 @@ export class MediaProcessStatistics extends MediaProcess {
                             let time_match = match.split(':')
                             let time = (Number(time_match[0]) * 60 * 60) + (Number(time_match[1]) * 60) + Number(time_match[2])
 
-                            if (time && this.media.video.fps) this.media.video.total_frames = Math.ceil(time * this.media.video.fps) * 1000
+                            if (time && this.media.video.fps) {
+                                let frames = Math.ceil(time * this.media.video.fps)
+                                if (this.media.video.total_frames < frames) this.media.video.total_frames = frames
+                            }
 
                         }
                         // if we match by frames
-                        else this.media.video.total_frames = parseInt(match)
+                        else {
+                            if (this.media.video.total_frames < parseInt(match)) this.media.video.total_frames = parseInt(match)
+                        }
 
                     }
 
