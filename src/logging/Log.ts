@@ -20,8 +20,6 @@ export class Log {
      */
     static send(color: (str: string) => string, ...messages: any[]): void {
 
-        Log.debug('called send')
-
         for (const message of messages) {
 
             if (typeof (message) === 'object') console.log('obj', message)
@@ -102,7 +100,7 @@ export class Log {
      */
     flushBuffer(): void {
 
-        console.log('called flushbuffer')
+        Log.debug('called flushbuffer')
 
         if (this.#buffer) {
 
