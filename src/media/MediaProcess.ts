@@ -26,7 +26,7 @@ export class MediaProcess {
 
     async stop(): Promise<void> {
         if (this.hasChildProcess()) {
-            new Log().send(LogColor.fgRed, 'Killing process: ', this.media.file.name_modified)
+            Log.send(LogColor.fgRed, 'Killing process: ', this.media.file.name_modified)
             this.child.kill()
         }
     }
