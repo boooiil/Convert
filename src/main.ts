@@ -1,5 +1,8 @@
 import { Container } from 'application/Container'
+import { Debug } from 'application/Debug'
 import { Ticker } from 'application/Ticker'
+import { writeFileSync } from 'fs'
+import { Log } from 'logging/Log'
 
 /**
  * Because we are using hardware specific encoders,
@@ -50,7 +53,13 @@ async function main() {
     process.on('SIGINT', () => {
         // do something
         console.log('RECEIVED SIGINT')
-        process.exit()
+        if (Debug.toggle) {
+            Log.debug('Debugging enabled. Writing debug file.')
+            writeFileSync('container_debug.json', JSON.stringify(container, null, 4))
+            Log.debug('Debug file written.')
+            process.exit(0)
+        }
+        else process.exit()
     })
 
 }
