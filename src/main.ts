@@ -18,10 +18,7 @@ import { Log } from 'logging/Log'
  *  - Maybe it should be a singleton?
  *  - We could just refine what is passed to other methods.
  * 
- * 
- * Do validation process.
  * Refine encoding fallback process.
- * Refine error handling in conversion process.
  * Add a way to skip validation.
  * 
  * AV1 has different encoding options.
