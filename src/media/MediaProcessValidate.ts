@@ -24,8 +24,6 @@ export class MediaProcessValidate extends MediaProcess {
 
                 data = data.toString()
 
-                Log.debug(data)
-
                 // Get the converted frame amount and fps
                 if (/(?<=frame=)(.*)(?=fps)/g.test(data)) {
 
