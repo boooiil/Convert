@@ -2,7 +2,24 @@
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
     "rules": {
-        "semi": ["error", "never"],
-        "quotes": [2, "single"]
+        "semi": [2, "never"],
+        "quotes": [2, "single"],
+        "constructor-super": 2,
+        "no-compare-neg-zero": 2,
+        "no-debugger": 2,
+        "no-dupe-class-members": 2,
+        "no-duplicate-imports": 2,
+        "no-import-assign": 2,
+        "no-inner-declarations": 2,
+        "no-invalid-regexp": 2,
+        "no-irregular-whitespace": 2,
+        "no-unused-vars": 1,
+        "no-useless-backreference": 1,
+        "no-useless-escape": 1,
+        "arrow-body-style": 1,
+        "block-scoped-var": 1,
+        "camelcase": 1,
+        "eqeqeq": 2
+
     }
 }
