@@ -53,9 +53,6 @@ Options:
 -tr, --trim <hh:mm:ss,hh:mm:ss>
    Trim the media.
 
--v, --validate <string>
-   Override the validation directory
-
 ```
 
 ```
