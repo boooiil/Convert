@@ -8,8 +8,6 @@ export class Settings {
 
     /** Current working directory */
     workingDir = process.cwd()
-    /** Directory to store temporary files */
-    validateDir: string
 
     /** List of supported encoders */
     supportedEncoders: [
@@ -48,14 +46,6 @@ export class Settings {
         'grain',
     ]
 
-    /**
-     * 
-     * @param validateDirectory The directory to store temporary files.
-     */
-    constructor(validateDirectory: string = '/dev/shm/') {
-
-        this.validateDir = validateDirectory
-
-    }
+    constructor() { }
 
 }
