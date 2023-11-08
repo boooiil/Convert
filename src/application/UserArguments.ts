@@ -3,6 +3,7 @@ import { Container } from './Container'
 import { LogColor } from 'logging/LogColor'
 import { Log } from 'logging/Log'
 import { MediaDefinedFormat } from 'media/MediaDefinedFormat'
+import { Debug } from './Debug'
 
 /**
  * This class handles parsing of user arguments.
@@ -28,7 +29,7 @@ export class UserArguments {
 
                     case '-d':
                     case '--debug':
-                        container.debug.toggle = true
+                        Debug.toggle = true
                         break
 
                     case '-e':
@@ -152,7 +153,7 @@ export class UserArguments {
      */
     invalid(argument: string): void {
 
-        new Log().send(LogColor.fgRed, 'Invalid argument: ', argument)
+        Log.send(LogColor.fgRed, 'Invalid argument: ', argument)
 
     }
 

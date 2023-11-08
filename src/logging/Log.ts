@@ -1,6 +1,7 @@
 import { stdout } from 'process'
 import { LogBuffer } from './LogBuffer'
 import { LogColor } from './LogColor'
+import { Debug } from 'application/Debug'
 
 /**
  * Class to handle logging to the console.
@@ -17,7 +18,7 @@ export class Log {
      * @param color The color of the message.
      * @param messages The message to send.
      */
-    send(color: (str: string) => string, ...messages: any[]): void {
+    static send(color: (str: string) => string, ...messages: any[]): void {
 
         console.log('called send')
 
@@ -60,7 +61,7 @@ export class Log {
 
         if (this.#buffer.isFull()) {
 
-            this.send(color, this.#buffer.output())
+            Log.send(color, this.#buffer.output())
             this.#buffer = null
 
         }
@@ -105,10 +106,16 @@ export class Log {
 
         if (this.#buffer) {
 
-            this.send(LogColor.fgRed, this.#buffer.output())
+            Log.send(LogColor.fgRed, this.#buffer.output())
             this.#buffer = null
 
         }
+
+    }
+
+    static debug(...messages: any[]): void {
+
+        if (Debug.toggle) this.send(LogColor.fgRed, messages)
 
     }
 

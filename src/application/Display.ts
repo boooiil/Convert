@@ -3,6 +3,7 @@ import { LogColor } from 'logging/LogColor'
 import { truncateString } from 'utils/Strings'
 import { Container } from './Container'
 import { Activity } from './Activity'
+import { Debug } from './Debug'
 
 /**
  * This class handles the logging of messages to the console pertaining to the current
@@ -39,7 +40,7 @@ export class Display {
         let tune = this.container.appEncodingDecision.tune ? `${ob + LogColor.fgBlue('TUNE') + cb} ${LogColor.fgGray(this.container.appEncodingDecision.tune.toUpperCase())} ` : ''
         let amount = `${ob + LogColor.fgBlue('AMOUNT') + cb} ${LogColor.fgGray(this.container.appEncodingDecision.amount.toString())} `
         let constrain = this.container.appEncodingDecision.useConstrain ? ob + LogColor.fgRed('CONSTRAIN') + cb + ' ' : ''
-        let debug = this.container.debug.toggle ? ob + LogColor.fgRed('DEBUG') + cb + ' ' : ''
+        let debug = Debug.toggle ? ob + LogColor.fgRed('DEBUG') + cb + ' ' : ''
         let crop = this.container.appEncodingDecision.crop ? ob + LogColor.fgRed('CROP') + cb + ' ' : ''
 
         let line = `${t}${amount}${encoder}${running_encoder}${running_decoder}${tune}${quality}${crop}${constrain}${debug}\n`
