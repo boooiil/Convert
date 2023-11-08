@@ -6,6 +6,10 @@ import { MediaFormat } from './MediaFormat'
 import { MediaDefinedFormat } from './MediaDefinedFormat'
 
 import * as childProcess from 'child_process'
+import { ProbeResultFormat } from 'ffmpeg/ProbeResultFormat'
+import { ProbeResultStreamAudio } from 'ffmpeg/ProbeResultStreamAudio'
+import { ProbeResultStreamVideo } from 'ffmpeg/ProbeResultStreamVideo'
+import { ProbeResultStreamSubtitle } from 'ffmpeg/ProbeResultStreamSubtitle'
 
 export class MediaProcessStatistics extends MediaProcess {
     constructor(container: Container, media: Media) {
@@ -16,91 +20,32 @@ export class MediaProcessStatistics extends MediaProcess {
 
         return new Promise((resolve) => {
 
-            this.child = childProcess.exec(`ffprobe -hide_banner -i "${this.media.file.renamePath}"`)
+            this.child = childProcess.exec(`ffprobe -v quiet -print_format json -show_format -show_streams "${this.media.file.renamePath}"`, (err, data) => {
 
-            this.child.stderr.on('data', data => {
+                let ffprobeResult: { format: ProbeResultFormat, streams: (ProbeResultStreamAudio | ProbeResultStreamVideo | ProbeResultStreamSubtitle)[] } = JSON.parse(data)
 
-                let subtitleOverride = false
+                let videoStream = ffprobeResult.streams.find(stream => stream.codec_type === 'video') as ProbeResultStreamVideo
+                //let subtitleStreams = ffprobeResult.streams.filter(stream => stream.codec_type === 'subtitle') as ProbeResultStreamSubtitle[]
 
-                data = data.toString()
+                const [numerator, denominator] = videoStream.r_frame_rate.split('/').map(Number)
+                const timeMatch = videoStream.tags.DURATION.match(/(\d+):(\d+):(\d+)/)
+                const duration = (Number(timeMatch[1]) * 60 * 60) + (Number(timeMatch[2]) * 60) + Number(timeMatch[3])
 
-                data.split('\n').forEach((line: string) => {
+                this.media.file.size = parseInt(ffprobeResult.format.size)
+                this.media.video.fps = Math.round((numerator / denominator) * 100) / 100
+                this.media.video.width = videoStream.width
+                this.media.video.height = videoStream.height
+                this.media.video.totalFrames = Math.ceil(duration * this.media.video.fps)
 
-                    //fps
-                    if (/(\d+\.\d+|\d+).?fps/.test(line)) this.media.video.fps = parseFloat(line.match(/(\d+\.\d+|\d+).?fps/)[1])
+                // for subtitle in subtitleStreams
+                //    if subtitle.codec_name is 'mov_text'
+                //       ... etc
 
-                    //total frames
-                    //if (/(?:NUMBER_OF_FRAMES|NUMBER_OF_FRAMES-eng|DURATION).+ (\d+:\d+:\d+|\d+)/.test(line)) {
-                    if (/(?:DURATION).+ (\d+:\d+:\d+|\d+)/.test(line)) {
+                if (/header parsing failed/im.test(data)) {
 
-                        let match = line.match(/(?:DURATION).+ (\d+:\d+:\d+|\d+)/)[1]
+                    return resolve(Activity.FAILED_FILE_NOT_RECOGNIZED)
 
-                        // if we match by duration (hh:mm:ss)
-                        if (match.includes(':')) {
-
-                            let timeMatch = match.split(':')
-                            let time = (Number(timeMatch[0]) * 60 * 60) + (Number(timeMatch[1]) * 60) + Number(timeMatch[2])
-
-                            if (time && this.media.video.fps) {
-                                let frames = Math.ceil(time * this.media.video.fps)
-                                if (this.media.video.totalFrames < frames) this.media.video.totalFrames = frames
-                            }
-                            else if (!this.media.video.fps) {
-                                // hello, you have arrived at a case that I did not want to account for
-                                // simple fix to this issue is to obtain the number of frames in the video stream
-                                // it must ONLY be from the video stream, others will be inaccurate
-                                // duration is the best way to go, but it is not always available
-                                throw new Error('Video did not have a framerate, and the duration was not available. This should not happen.')
-                            }
-
-                        }
-                        // if we match by frames
-                        // else {
-                        //     if (this.media.video.total_frames < parseInt(match)) this.media.video.total_frames = parseInt(match)
-                        // }
-
-                    }
-
-                    //resolution
-                    if (/, (\d+x\d+).?/.test(line)) {
-
-                        let match = line.match(/, (\d+x\d+).?/)[1].split('x')
-
-                        this.media.video.width = parseInt(match[0])
-                        this.media.video.height = parseInt(match[1])
-
-                    }
-
-                    //subtitle
-                    if (/([S-s]ubtitle: .+)/.test(line)) {
-
-                        let match = line.match(/([S-s]ubtitle: .+)/)[1]
-
-                        if (!subtitleOverride && /subrip|ass|mov_text/.test(match)) this.media.video.subtitleProvider = 'mov'
-                        else if (!subtitleOverride && /dvd_sub/.test(match)) this.media.video.subtitleProvider = 'dvd'
-                        else if (!subtitleOverride && /hdmv_pgs_subtitle/.test(match)) {
-
-                            subtitleOverride = true
-                            this.media.video.subtitleProvider = 'hdmv'
-
-                        }
-
-                    }
-
-                    //attachment
-                    if (/([A-a]ttachment: .+)/.test(line)) {
-
-                        if (this.media.video.subtitleProvider === 'mov') this.media.video.subtitleProvider = 'ass'
-
-                    }
-
-                    if (/header parsing failed/im.test(data)) {
-
-                        return resolve(Activity.FAILED_FILE_NOT_RECOGNIZED)
-
-                    }
-
-                })
+                }
 
             })
 
