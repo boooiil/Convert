@@ -93,7 +93,6 @@ export class Media {
 
         this.activity = Activity.CONVERT
         this.activity = await new MediaProcessConversion(container, this).start()
-        
 
     }
 
@@ -145,8 +144,23 @@ export class Media {
 
         /** Map video stream to index 0 */
         this.ffmpeg_argument.push('-map', '0:v:0')
-        /** Map all audio streams */
-        this.ffmpeg_argument.push('-map', '0:a?')
+
+        if (container.appEncodingDecision.audioStreams.length) {
+
+            for (const stream of container.appEncodingDecision.audioStreams) {
+
+                this.ffmpeg_argument.push('-map', `0:a:${stream}`)
+
+            }
+
+        }
+        else {
+
+            /** Map all audio streams */
+            this.ffmpeg_argument.push('-map', '0:a?')
+
+        }
+
         /** Map all subtitle streams */
         this.ffmpeg_argument.push('-map', '0:s?')
         /** Map all attachment streams */
@@ -157,6 +171,8 @@ export class Media {
 
         /** Codec attachment, Copy */
         this.ffmpeg_argument.push('-c:t', 'copy')
+
+        this.ffmpeg_argument.push('-c:a', 'copy')
 
         /** Slow CPU preset */
         this.ffmpeg_argument.push('-preset', 'slow')
@@ -186,8 +202,6 @@ export class Media {
             this.ffmpeg_argument.push('-crf', `${format.crf}`)
 
         }
-
-        this.ffmpeg_argument.push('-c:a', 'copy')
 
         if (container.appEncodingDecision.crop) {
 
