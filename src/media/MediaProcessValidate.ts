@@ -39,7 +39,6 @@ export class MediaProcessValidate extends MediaProcess {
                     this.media.working.quality = quality
                     this.media.working.bitrate = bitrate
 
-
                 }
 
                 if (/corrupt/ig.test(data) || 
@@ -51,7 +50,6 @@ export class MediaProcessValidate extends MediaProcess {
                 }
 
             })
-
 
             this.child.on('error', (err) => {
 
