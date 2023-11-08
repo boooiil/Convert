@@ -20,7 +20,7 @@ Options:
 -c, --crop
    Crop the media to the specified resolution.
 
--C, --constrain
+-co, --constrain
     Force the encoder to use a max bitrate with CRF.
 
 -crf, --crf <number>
