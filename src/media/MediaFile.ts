@@ -4,25 +4,25 @@
 export class MediaFile {
 
     /** Modified filename */
-    name_modified: string = ''
+    modifiedFileName: string = ''
     /** Modified filename with extension */
-    name_modified_ext: string = ''
+    modifiedFileNameExt: string = ''
     /** Conversion filename with extension */
-    name_convert: string = ''
+    conversionName: string = ''
     /** File Extension */
     ext: string = ''
     /** File size */
     size: number = 0
     /** New file size */
-    new_size: number = 0
+    newSize: number = 0
     /** Validation size */
-    val_size: number = 0
+    validationSize: number = 0
     /** Original file path with file */
     path: string = ''
     /** Renamed file path with file */
-    path_rename: string = ''
+    renamePath: string = ''
     /** Converted file path with file*/
-    path_convert: string = ''
+    conversionPath: string = ''
     /** Quality */
     quality: number = 0
     /** Series Name */

@@ -3,10 +3,8 @@ import { Container } from '../application/Container'
 import { Media } from './Media'
 import { Activity } from 'application/Activity'
 
-import * as child_process from 'child_process'
+import * as childProcess from 'child_process'
 import { existsSync, unlinkSync } from 'fs'
-import { Debug } from 'application/Debug'
-import { Log } from 'logging/Log'
 
 export class MediaProcessValidate extends MediaProcess {
 
@@ -18,7 +16,7 @@ export class MediaProcessValidate extends MediaProcess {
 
         return new Promise((resolve) => {
 
-            this.child = child_process.exec(`ffprobe -hide_banner -i "${this.media.file.path_rename}"`)
+            this.child = childProcess.exec(`ffprobe -hide_banner -i "${this.media.file.renamePath}"`)
 
             this.child.stderr.on('data', data => {
 
@@ -35,9 +33,9 @@ export class MediaProcessValidate extends MediaProcess {
                     bitrate = bitrate ? bitrate[0].trim() : 0
                     size = size ? size[0].trim() : 0
 
-                    this.media.file.val_size = Number(size) * 1000
+                    this.media.file.validationSize = Number(size) * 1000
 
-                    this.media.working.completed_frames = data.match(/(?<=frame=)(.*)(?=fps)/g)[0].trim() * 1000
+                    this.media.working.completedFrames = data.match(/(?<=frame=)(.*)(?=fps)/g)[0].trim() * 1000
                     this.media.working.fps = data.match(/(?<=fps=)(.*)(?= q)/g)[0]
                     this.media.working.quality = quality
                     this.media.working.bitrate = bitrate
@@ -54,8 +52,8 @@ export class MediaProcessValidate extends MediaProcess {
                     // if (this.media.video.use_subtitle == 'hdmv') {
                     //     if (existsSync(o.settings.validate + `Testing/${media.file.name}`)) unlinkSync(o.settings.validate + `Testing/${media.file.name}`)
                     // }
-                    if (existsSync(this.container.settings.validateDir + `Testing/${this.media.file.name_convert}`)) {
-                        unlinkSync(this.container.settings.validateDir + `Testing/${this.media.file.name_convert}`)
+                    if (existsSync(this.container.settings.validateDir + `Testing/${this.media.file.conversionName}`)) {
+                        unlinkSync(this.container.settings.validateDir + `Testing/${this.media.file.conversionName}`)
                     }
 
                     return resolve(Activity.FAILED_CORRUPT)

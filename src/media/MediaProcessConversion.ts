@@ -2,7 +2,7 @@ import { Container } from 'application/Container'
 import { MediaProcess } from './MediaProcess'
 import { Media } from './Media'
 
-import * as child_process from 'child_process'
+import * as childProcess from 'child_process'
 import { Activity } from 'application/Activity'
 import { Log } from 'logging/Log'
 
@@ -18,7 +18,7 @@ export class MediaProcessConversion extends MediaProcess {
 
         return new Promise((resolve) => {
 
-            this.child = child_process.exec(`ffmpeg -hide_banner ${this.media.ffmpeg_argument.join(' ')}`)
+            this.child = childProcess.exec(`ffmpeg -hide_banner ${this.media.ffmpegArguments.join(' ')}`)
 
             this.child.stderr.on('data', data => {
 
@@ -83,11 +83,11 @@ export class MediaProcessConversion extends MediaProcess {
                         bitrate = bitrate ? bitrate[0].trim() : 0
                         size = size ? size[0].trim() : 0
 
-                        this.media.working.completed_frames = data.match(/(?<=frame=)(.*)(?=fps)/g)[0].trim() //* 1000
+                        this.media.working.completedFrames = data.match(/(?<=frame=)(.*)(?=fps)/g)[0].trim() //* 1000
                         this.media.working.fps = Number(data.match(/(?<=fps=)(.*)(?= q)/g)[0])
                         this.media.working.quality = Number(quality)
                         this.media.working.bitrate = Number(bitrate)
-                        this.media.file.new_size = Number(size) * 1000
+                        this.media.file.newSize = Number(size) * 1000
 
                     }
                 }

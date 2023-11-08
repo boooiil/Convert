@@ -6,9 +6,9 @@ export class MediaVideoProperties {
     /** Video frames per second */
     fps: number = 0
     /** Total video frames */
-    total_frames: number = 0
+    totalFrames: number = 0
     /** Subtitle mapping within the video */
-    subtitle_provider: string = ''
+    subtitleProvider: string = ''
     /** Video width */
     width: number = 0
     /** Video height */
@@ -16,11 +16,11 @@ export class MediaVideoProperties {
     /** ??? */
     ratio: string = ''
     /** Adjusted width */
-    converted_width: string = ''
+    convertedWidth: string = ''
     /** Adjusted height */
-    converted_height: string = ''
+    convertedHeight: string = ''
     /** Adjusted resolution */
-    converted_resolution: string = ''
+    convertedResolution: string = ''
     /** Crop ratio */
     crop: string = ''
     /** Constant Rate Factor */

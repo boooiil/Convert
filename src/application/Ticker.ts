@@ -38,15 +38,15 @@ export class Ticker {
         //CONT: We could move this to a recursive function that is called every second, but that's no fun.
         setInterval(() => {
 
-            let current_amount = Object.keys(this.container.converting).length
+            let currentAmount = Object.keys(this.container.converting).length
 
-            if (current_amount < this.container.appEncodingDecision.amount) {
+            if (currentAmount < this.container.appEncodingDecision.amount) {
 
                 let media = this.container.pending[0]
 
-                if (!media || media.activity != Activity.WAITING) {
+                if (!media || media.activity !== Activity.WAITING) {
 
-                    if (current_amount === 0) {
+                    if (currentAmount === 0) {
 
                         this.container.logger.flushBuffer()
                         if (Debug.toggle) {
@@ -71,12 +71,12 @@ export class Ticker {
 
             }
 
-            if (current_amount > this.container.appEncodingDecision.amount) {
+            if (currentAmount > this.container.appEncodingDecision.amount) {
 
                 Log.send(LogColor.fgRed, 'CURRENT TRANSCODES ARE GREATER THAN THE ALLOWED AMOUNT.')
                 Log.send(LogColor.fgRed, 'CURRENT ALLOWED AMOUNT: ' + this.container.appEncodingDecision.amount)
                 Log.send(LogColor.fgRed, 'CURRENT QUEUE:')
-                Object.keys(this.container.converting).forEach(media => console.error('CURRENT FILE: ' + this.container.converting[media].file.name_modified))
+                Object.keys(this.container.converting).forEach(media => console.error('CURRENT FILE: ' + this.container.converting[media].file.modifiedFileName))
                 process.exit(1)
 
             }

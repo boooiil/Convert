@@ -30,7 +30,7 @@ export class UserCapabilities {
 
             if (this.platform === 'win32') {
 
-                const hwinfo = child.exec('wmic path win32_VideoController get name', (err, stdout, stderr) => {
+                child.exec('wmic path win32_VideoController get name', (err, stdout, stderr) => {
 
                     if (err) throw err
                     if (stderr) throw stderr
@@ -91,7 +91,7 @@ export class UserCapabilities {
 
             else if (this.platform === 'linux') {
 
-                const hwinfo = child.exec('lspci | grep VGA', (err, stdout, stderr) => {
+                child.exec('lspci | grep VGA', (err, stdout, stderr) => {
 
                     if (err) throw err
                     if (stderr) throw stderr

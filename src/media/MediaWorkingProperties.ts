@@ -6,7 +6,7 @@ export class MediaWorkingProperties {
     /** Current amount of frames being processed per second */
     fps: number = 0
     /** Total amount of frames converted */
-    completed_frames: number = 0
+    completedFrames: number = 0
     /** Conversion quality ratio */
     quality: number = 0
     /** Conversion bitrate */

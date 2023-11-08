@@ -1,12 +1,10 @@
 import { Log } from 'logging/Log'
-import { Debug } from './Debug'
 import { ApplicationEncodingDecision } from './ApplicationEncodingDecision'
 import { Settings } from './Settings'
 import { UserCapabilities } from './UserCapabilities'
 import { Media } from 'media/Media'
 import { UserArguments } from './UserArguments'
 import { readdirSync } from 'fs'
-import { LogColor } from 'logging/LogColor'
 
 /**
  * This class contains the bulk of information for the current and pending conversions
@@ -50,7 +48,7 @@ export class Container {
      */
     scanWorkingDir() {
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             readdirSync(this.settings.workingDir).forEach((file) => {
 
                 if (file.endsWith('.mkv')) {

@@ -5,17 +5,17 @@
  */
 export function time(value: number | null, type: boolean | null) {
 
-    if (value == null) {
+    if (value === null) {
 
         let date = new Date()
 
         let a = date.getHours()
         let b = date.getMinutes()
         let c = date.getSeconds()
-        let d = a == 12 ? 'PM' : a > 12 ? 'PM' : 'AM'
-        let h = a == 12 || (a > 9 && a < 12) ? `${a}` : a > 12 ? a - 12 > 9 ? `${a - 12}` : `0${a - 12}` : `0${a}`
-        let m = String(b).length == 2 ? b : `0${b}`
-        let s = String(c).length == 2 ? c : `0${c}`
+        let d = a === 12 ? 'PM' : a > 12 ? 'PM' : 'AM'
+        let h = a === 12 || (a > 9 && a < 12) ? `${a}` : a > 12 ? a - 12 > 9 ? `${a - 12}` : `0${a - 12}` : `0${a}`
+        let m = String(b).length === 2 ? b : `0${b}`
+        let s = String(c).length === 2 ? c : `0${c}`
 
         return `${h}:${m}:${s}-${d} - ${date.toDateString()}`
 
@@ -28,10 +28,10 @@ export function time(value: number | null, type: boolean | null) {
         let a = date.getHours()
         let b = date.getMinutes()
         let c = date.getSeconds()
-        let d = a == 12 ? 'PM' : a > 12 ? 'PM' : 'AM'
-        let h = a == 12 || (a > 9 && a < 12) ? `${a}` : a > 12 ? a - 12 > 9 ? `${a - 12}` : `0${a - 12}` : `0${a}`
-        let m = String(b).length == 2 ? b : `0${b}`
-        let s = String(c).length == 2 ? c : `0${c}`
+        let d = a === 12 ? 'PM' : a > 12 ? 'PM' : 'AM'
+        let h = a === 12 || (a > 9 && a < 12) ? `${a}` : a > 12 ? a - 12 > 9 ? `${a - 12}` : `0${a - 12}` : `0${a}`
+        let m = String(b).length === 2 ? b : `0${b}`
+        let s = String(c).length === 2 ? c : `0${c}`
 
         return `${h}:${m}:${s}-${d}`
 

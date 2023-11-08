@@ -91,7 +91,7 @@ export class Log {
      */
     hasBuffer(): boolean {
 
-        return this.#buffer != null
+        return this.#buffer !== null
 
     }
 

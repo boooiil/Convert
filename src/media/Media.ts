@@ -4,14 +4,12 @@ import { MediaVideoProperties } from './MediaVideoProperties'
 import { MediaWorkingProperties } from './MediaWorkingProperties'
 import { Container } from 'application/Container'
 import { HWAccel } from 'ffmpeg/HWAccelerators'
-import { LogColor } from 'logging/LogColor'
 import { existsSync, mkdirSync, renameSync } from 'fs'
 import { MediaDefinedFormat } from './MediaDefinedFormat'
 import { MediaProcessStatistics } from './MediaProcessStatistics'
 import { MediaProcessConversion } from './MediaProcessConversion'
 import { MediaProcessValidate } from './MediaProcessValidate'
 import { Log } from 'logging/Log'
-import { Debug } from 'application/Debug'
 
 /**
  * The Media class contains properties and methods for handling media files, including renaming and
@@ -32,7 +30,7 @@ export class Media {
     ended: number = 0
 
     /** FFMPEG arguments */
-    ffmpeg_argument: string[] = []
+    ffmpegArguments: string[] = []
 
     /** File information */
     file: MediaFile
@@ -60,7 +58,7 @@ export class Media {
 
         this.started = 0
         this.ended = 0
-        this.ffmpeg_argument = []
+        this.ffmpegArguments = []
 
     }
 
@@ -116,40 +114,40 @@ export class Media {
 
         let format = MediaDefinedFormat.formats[container.appEncodingDecision.quality]
 
-        this.ffmpeg_argument = []
+        this.ffmpegArguments = []
 
-        this.ffmpeg_argument.push('-hide_banner')
+        this.ffmpegArguments.push('-hide_banner')
 
         if (container.appEncodingDecision.useHardwareDecode) {
 
             switch (container.userCapabilities.GPUProvider) {
 
                 case 'amd':
-                    this.ffmpeg_argument.push('-hwaccel', HWAccel.AMD)
+                    this.ffmpegArguments.push('-hwaccel', HWAccel.AMD)
                     break
 
                 case 'intel':
-                    this.ffmpeg_argument.push('-hwaccel', HWAccel.INTEL)
+                    this.ffmpegArguments.push('-hwaccel', HWAccel.INTEL)
                     break
 
                 case 'nvidia':
-                    this.ffmpeg_argument.push('-hwaccel', HWAccel.NVIDIA)
+                    this.ffmpegArguments.push('-hwaccel', HWAccel.NVIDIA)
                     break
 
             }
 
         }
 
-        this.ffmpeg_argument.push('-i', `"${this.file.path_rename}"`)
+        this.ffmpegArguments.push('-i', `"${this.file.renamePath}"`)
 
         /** Map video stream to index 0 */
-        this.ffmpeg_argument.push('-map', '0:v:0')
+        this.ffmpegArguments.push('-map', '0:v:0')
 
         if (container.appEncodingDecision.audioStreams.length) {
 
             for (const stream of container.appEncodingDecision.audioStreams) {
 
-                this.ffmpeg_argument.push('-map', `0:a:${stream}`)
+                this.ffmpegArguments.push('-map', `0:a:${stream}`)
 
             }
 
@@ -157,71 +155,71 @@ export class Media {
         else {
 
             /** Map all audio streams */
-            this.ffmpeg_argument.push('-map', '0:a?')
+            this.ffmpegArguments.push('-map', '0:a?')
 
         }
 
         /** Map all subtitle streams */
-        this.ffmpeg_argument.push('-map', '0:s?')
+        this.ffmpegArguments.push('-map', '0:s?')
         /** Map all attachment streams */
-        this.ffmpeg_argument.push('-map', '0:t?')
+        this.ffmpegArguments.push('-map', '0:t?')
 
         /** Codec video */
-        this.ffmpeg_argument.push('-c:v', container.appEncodingDecision.runningEncoder)
+        this.ffmpegArguments.push('-c:v', container.appEncodingDecision.runningEncoder)
 
         /** Codec attachment, Copy */
-        this.ffmpeg_argument.push('-c:t', 'copy')
+        this.ffmpegArguments.push('-c:t', 'copy')
 
-        this.ffmpeg_argument.push('-c:a', 'copy')
+        this.ffmpegArguments.push('-c:a', 'copy')
 
         /** Slow CPU preset */
-        this.ffmpeg_argument.push('-preset', 'slow')
+        this.ffmpegArguments.push('-preset', 'slow')
 
         /** Encoder level */
-        this.ffmpeg_argument.push('-level', '4.1')
+        this.ffmpegArguments.push('-level', '4.1')
 
         if (container.appEncodingDecision.useBitrate) {
 
-            this.ffmpeg_argument.push('-b:v', `${format.bitrate}M`)
-            this.ffmpeg_argument.push('-bufsize', `${format.bitrate * 2}M`)
-            this.ffmpeg_argument.push('-maxrate', `${format.max}M`)
-            this.ffmpeg_argument.push('-minrate', `${format.min}M`)
+            this.ffmpegArguments.push('-b:v', `${format.bitrate}M`)
+            this.ffmpegArguments.push('-bufsize', `${format.bitrate * 2}M`)
+            this.ffmpegArguments.push('-maxrate', `${format.max}M`)
+            this.ffmpegArguments.push('-minrate', `${format.min}M`)
 
         }
 
         else if (container.appEncodingDecision.useConstrain) {
 
-            this.ffmpeg_argument.push('-crf', `${format.crf}`)
-            this.ffmpeg_argument.push('-bufsize', `${format.bitrate * 2}M`)
-            this.ffmpeg_argument.push('-maxrate', `${format.max}M`)
+            this.ffmpegArguments.push('-crf', `${format.crf}`)
+            this.ffmpegArguments.push('-bufsize', `${format.bitrate * 2}M`)
+            this.ffmpegArguments.push('-maxrate', `${format.max}M`)
 
         }
 
         else {
 
-            this.ffmpeg_argument.push('-crf', `${format.crf}`)
+            this.ffmpegArguments.push('-crf', `${format.crf}`)
 
         }
 
         if (container.appEncodingDecision.crop) {
 
-            this.ffmpeg_argument.push('-vf', `scale=${this.video.converted_resolution}:flags=lanczos,crop=${format.crop}`)
+            this.ffmpegArguments.push('-vf', `scale=${this.video.convertedResolution}:flags=lanczos,crop=${format.crop}`)
 
 
         }
 
-        else this.ffmpeg_argument.push('-vf', `scale=${this.video.converted_resolution}:flags=lanczos`)
+        else this.ffmpegArguments.push('-vf', `scale=${this.video.convertedResolution}:flags=lanczos`)
 
         if (container.appEncodingDecision.startBeginning) {
 
-            this.ffmpeg_argument.push('-ss', container.appEncodingDecision.startBeginning)
+            this.ffmpegArguments.push('-ss', container.appEncodingDecision.startBeginning)
 
         }
 
         if (container.appEncodingDecision.trim) {
 
-            this.ffmpeg_argument.push('-ss', container.appEncodingDecision.trim.split(',')[0])
-            this.ffmpeg_argument.push('-to', container.appEncodingDecision.trim.split(',')[1])
+            this.ffmpegArguments.push('-ss', container.appEncodingDecision.trim.split(',')[0])
+            this.ffmpegArguments.push('-to', container.appEncodingDecision.trim.split(',')[1])
 
         }
 
@@ -233,19 +231,19 @@ export class Media {
 
         // }
 
-        this.ffmpeg_argument.push('-c:s', 'copy')
+        this.ffmpegArguments.push('-c:s', 'copy')
 
         if (container.appEncodingDecision.tune) {
 
-            this.ffmpeg_argument.push('-tune', container.appEncodingDecision.tune)
+            this.ffmpegArguments.push('-tune', container.appEncodingDecision.tune)
 
         }
 
-        if (overwrite || container.appEncodingDecision.overwrite) this.ffmpeg_argument.push('-y')
+        if (overwrite || container.appEncodingDecision.overwrite) this.ffmpegArguments.push('-y')
 
-        this.ffmpeg_argument.push(`"${this.file.path_convert}"`)
+        this.ffmpegArguments.push(`"${this.file.conversionPath}"`)
 
-        Log.debug('FFMPEG Arguments:', this.ffmpeg_argument.join(' '))
+        Log.debug('FFMPEG Arguments:', this.ffmpegArguments.join(' '))
 
     }
 
@@ -277,29 +275,29 @@ export class Media {
             if (quality) this.file.quality = parseInt(quality.replace(/p/i, ''))
 
             this.file.ext = extension
-            this.file.name_modified = `${this.file.series} s${this.file.season}${episode} [${this.file.quality}p]`
-            this.file.name_modified_ext = this.file.name_modified + extension
+            this.file.modifiedFileName = `${this.file.series} s${this.file.season}${episode} [${this.file.quality}p]`
+            this.file.modifiedFileNameExt = this.file.modifiedFileName + extension
 
         }
 
         else {
 
             this.file.ext = extension
-            this.file.name_modified = this.name.replace(extension, '')
-            this.file.name_modified_ext = this.name
+            this.file.modifiedFileName = this.name.replace(extension, '')
+            this.file.modifiedFileNameExt = this.name
 
         }
 
-        if (extension === '.mkv' || extension === '.avi') this.file.name_convert = this.file.name_modified + '.mkv'
-        else this.file.name_convert = this.file.name_modified + extension
+        if (extension === '.mkv' || extension === '.avi') this.file.conversionName = this.file.modifiedFileName + '.mkv'
+        else this.file.conversionName = this.file.modifiedFileName + extension
 
         this.file.path = container.settings.workingDir + '/' + this.name
-        this.file.path_rename = container.settings.workingDir + '/' + this.file.name_modified_ext
+        this.file.renamePath = container.settings.workingDir + '/' + this.file.modifiedFileNameExt
 
         // If this file includes a season, make a season folder for it
         if (this.file.season) {
 
-            this.file.path_convert = this.path + `/${this.file.series} Season ${this.file.season}/` + this.file.name_convert
+            this.file.conversionPath = this.path + `/${this.file.series} Season ${this.file.season}/` + this.file.conversionName
 
             if (!existsSync(this.path + `/${this.file.series} Season ${this.file.season}`))
                 mkdirSync(this.path + `/${this.file.series} Season ${this.file.season}`)
@@ -307,7 +305,7 @@ export class Media {
         }
         // Otherwise, just put it in the root of the series folder
         else {
-            this.file.path_convert = this.path + '/Converted/' + this.file.name_convert
+            this.file.conversionPath = this.path + '/Converted/' + this.file.conversionName
             if (!existsSync(this.path + '/Converted')) mkdirSync(this.path + '/Converted')
         }
 
@@ -317,7 +315,7 @@ export class Media {
 
         }
 
-        renameSync(this.file.path, this.file.path_rename)
+        renameSync(this.file.path, this.file.renamePath)
 
     }
 

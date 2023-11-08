@@ -5,7 +5,7 @@ import { Activity } from 'application/Activity'
 import { MediaFormat } from './MediaFormat'
 import { MediaDefinedFormat } from './MediaDefinedFormat'
 
-import * as child_process from 'child_process'
+import * as childProcess from 'child_process'
 
 export class MediaProcessStatistics extends MediaProcess {
     constructor(container: Container, media: Media) {
@@ -16,11 +16,11 @@ export class MediaProcessStatistics extends MediaProcess {
 
         return new Promise((resolve) => {
 
-            this.child = child_process.exec(`ffprobe -hide_banner -i "${this.media.file.path_rename}"`)
+            this.child = childProcess.exec(`ffprobe -hide_banner -i "${this.media.file.renamePath}"`)
 
             this.child.stderr.on('data', data => {
 
-                let sub_override = false
+                let subtitleOverride = false
 
                 data = data.toString()
 
@@ -38,12 +38,12 @@ export class MediaProcessStatistics extends MediaProcess {
                         // if we match by duration (hh:mm:ss)
                         if (match.includes(':')) {
 
-                            let time_match = match.split(':')
-                            let time = (Number(time_match[0]) * 60 * 60) + (Number(time_match[1]) * 60) + Number(time_match[2])
+                            let timeMatch = match.split(':')
+                            let time = (Number(timeMatch[0]) * 60 * 60) + (Number(timeMatch[1]) * 60) + Number(timeMatch[2])
 
                             if (time && this.media.video.fps) {
                                 let frames = Math.ceil(time * this.media.video.fps)
-                                if (this.media.video.total_frames < frames) this.media.video.total_frames = frames
+                                if (this.media.video.totalFrames < frames) this.media.video.totalFrames = frames
                             }
                             else if (!this.media.video.fps) {
                                 // hello, you have arrived at a case that I did not want to account for
@@ -76,12 +76,12 @@ export class MediaProcessStatistics extends MediaProcess {
 
                         let match = line.match(/([S-s]ubtitle: .+)/)[1]
 
-                        if (!sub_override && /subrip|ass|mov_text/.test(match)) this.media.video.subtitle_provider = 'mov'
-                        else if (!sub_override && /dvd_sub/.test(match)) this.media.video.subtitle_provider = 'dvd'
-                        else if (!sub_override && /hdmv_pgs_subtitle/.test(match)) {
+                        if (!subtitleOverride && /subrip|ass|mov_text/.test(match)) this.media.video.subtitleProvider = 'mov'
+                        else if (!subtitleOverride && /dvd_sub/.test(match)) this.media.video.subtitleProvider = 'dvd'
+                        else if (!subtitleOverride && /hdmv_pgs_subtitle/.test(match)) {
 
-                            sub_override = true
-                            this.media.video.subtitle_provider = 'hdmv'
+                            subtitleOverride = true
+                            this.media.video.subtitleProvider = 'hdmv'
 
                         }
 
@@ -90,7 +90,7 @@ export class MediaProcessStatistics extends MediaProcess {
                     //attachment
                     if (/([A-a]ttachment: .+)/.test(line)) {
 
-                        if (this.media.video.subtitle_provider === 'mov') this.media.video.subtitle_provider = 'ass'
+                        if (this.media.video.subtitleProvider === 'mov') this.media.video.subtitleProvider = 'ass'
 
                     }
 
@@ -118,9 +118,9 @@ export class MediaProcessStatistics extends MediaProcess {
 
                     let format = MediaDefinedFormat.formats[this.container.appEncodingDecision.quality]
 
-                    this.media.video.converted_width = `${format.width}`
-                    this.media.video.converted_height = `${MediaFormat.getResolution(this.media.video.width, this.media.video.height, format.width)}`
-                    this.media.video.converted_resolution = this.media.video.converted_width + ':' + this.media.video.converted_height
+                    this.media.video.convertedWidth = `${format.width}`
+                    this.media.video.convertedHeight = `${MediaFormat.getResolution(this.media.video.width, this.media.video.height, format.width)}`
+                    this.media.video.convertedResolution = this.media.video.convertedWidth + ':' + this.media.video.convertedHeight
                     this.media.video.crf = format.crf
 
                     return resolve(Activity.WAITING_CONVERT)

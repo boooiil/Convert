@@ -71,11 +71,11 @@ export class MediaFormat {
      */
     static getResolution(width: number, height: number, newWidth: number): number {
 
-        let new_height = Math.ceil((height / width) * newWidth)
+        let newHeight = Math.ceil((height / width) * newWidth)
 
-        new_height = new_height % 2 === 0 ? new_height : new_height - 1
+        newHeight = newHeight % 2 === 0 ? newHeight : newHeight - 1
 
-        return new_height
+        return newHeight
 
     }
 }
