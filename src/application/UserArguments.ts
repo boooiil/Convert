@@ -18,9 +18,14 @@ export class UserArguments {
 
         process.argv.forEach((argument, index) => {
 
-            if (argument.startsWith('-')) {
+            if (argument.toLowerCase().startsWith('-')) {
 
                 switch (argument) {
+
+                    case '-as':
+                    case '--audiostreams':
+                        container.appEncodingDecision.audioStreams = process.argv[index + 1].split(',')
+                        break
 
                     case '-h':
                     case '--help':
