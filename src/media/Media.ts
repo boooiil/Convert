@@ -10,6 +10,8 @@ import { MediaDefinedFormat } from './MediaDefinedFormat'
 import { MediaProcessStatistics } from './MediaProcessStatistics'
 import { MediaProcessConversion } from './MediaProcessConversion'
 import { MediaProcessValidate } from './MediaProcessValidate'
+import { Log } from 'logging/Log'
+import { Debug } from 'application/Debug'
 
 /**
  * The Media class contains properties and methods for handling media files, including renaming and
@@ -229,11 +231,7 @@ export class Media {
 
         this.ffmpeg_argument.push(`"${this.file.path_convert}"`)
 
-        if (container.debug.toggle) {
-
-            container.logger.send(LogColor.fgRed, 'FFMPEG Arguments: ', this.ffmpeg_argument.join(' '))
-
-        }
+        Log.debug('FFMPEG Arguments:', this.ffmpeg_argument.join(' '))
 
     }
 

@@ -16,9 +16,6 @@ export class Container {
 
     logger: Log = new Log()
 
-    /** Instance of Debug */
-    debug: Debug
-
     /** Instance of ApplicationEncodingDecision */
     appEncodingDecision: ApplicationEncodingDecision
     /** Instance of Settings */
@@ -36,8 +33,6 @@ export class Container {
     userArguments: UserArguments
 
     constructor() {
-
-        this.debug = new Debug()
 
         this.appEncodingDecision = new ApplicationEncodingDecision()
         this.settings = new Settings()
@@ -60,7 +55,7 @@ export class Container {
 
                 if (file.endsWith('.mkv')) {
 
-                    if (this.debug.toggle) this.logger.send(LogColor.fgRed, 'Found file: ', file)
+                    Log.debug(LogColor.fgRed, 'Found file: ', file)
 
                     let media = new Media(file, this.settings.workingDir)
 

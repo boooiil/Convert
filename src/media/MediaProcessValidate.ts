@@ -5,6 +5,8 @@ import { Activity } from 'application/Activity'
 
 import * as child_process from 'child_process'
 import { existsSync, unlinkSync } from 'fs'
+import { Debug } from 'application/Debug'
+import { Log } from 'logging/Log'
 
 export class MediaProcessValidate extends MediaProcess {
 
@@ -22,7 +24,7 @@ export class MediaProcessValidate extends MediaProcess {
 
                 data = data.toString()
 
-                if (this.container.debug.toggle) console.log(data)
+                Log.debug(data)
 
                 // Get the converted frame amount and fps
                 if (/(?<=frame=)(.*)(?=fps)/g.test(data)) {
