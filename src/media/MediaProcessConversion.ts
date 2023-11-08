@@ -4,6 +4,7 @@ import { Media } from './Media'
 
 import * as child_process from 'child_process'
 import { Activity } from 'application/Activity'
+import { Log } from 'logging/Log'
 
 export class MediaProcessConversion extends MediaProcess {
 
@@ -22,6 +23,8 @@ export class MediaProcessConversion extends MediaProcess {
             this.child.stderr.on('data', data => {
 
                 data = data.toString()
+
+                Log.debug(data)
 
                 //if (this.container.debug.toggle) console.log(data)
 
@@ -59,6 +62,12 @@ export class MediaProcessConversion extends MediaProcess {
                 else if (/no such file/ig.test(data)) {
 
                     return resolve(Activity.FAILED_FILE_MISSING)
+                }
+
+                else if (/matches no streams/ig.test(data)) {
+
+                    return resolve(Activity.FAILED_INVALID_AUDIO_STREAMS)
+
                 }
 
                 else {
