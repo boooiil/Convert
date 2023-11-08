@@ -4,12 +4,12 @@ import { Media } from './Media'
 import { Activity } from 'application/Activity'
 import { MediaFormat } from './MediaFormat'
 import { MediaDefinedFormat } from './MediaDefinedFormat'
-
-import * as childProcess from 'child_process'
 import { ProbeResultFormat } from 'ffmpeg/ProbeResultFormat'
 import { ProbeResultStreamAudio } from 'ffmpeg/ProbeResultStreamAudio'
 import { ProbeResultStreamVideo } from 'ffmpeg/ProbeResultStreamVideo'
 import { ProbeResultStreamSubtitle } from 'ffmpeg/ProbeResultStreamSubtitle'
+
+import * as childProcess from 'child_process'
 
 export class MediaProcessStatistics extends MediaProcess {
     constructor(container: Container, media: Media) {
