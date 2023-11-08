@@ -52,10 +52,8 @@ Usage: node convert.js [...options]
    Trim the media.
 
 ```
-
+## Resolutions
 ```
-Resolutions:
-    
    Custom: 
      <value>p
         CRF: 24
@@ -157,9 +155,8 @@ Resolutions:
         HEIGHT: 640
         CROP: 854:720 (32:27)
 ```
-
+## Encoders
 ```
-Encoders:
    NVIDIA:
         AV1_NVENC (RTX 4000 OR NEWER)
         HEVC_NVENC (GTX 600 OR NEWER)
@@ -180,9 +177,8 @@ Encoders:
         HEVC (NEWER i5/R5 RECOMMENDED)
         H264
 ```
-
+## Hardware Accelerators
 ```
-Hardware Accelerators:
    NVIDIA:
         CUDA (GPU MUST SUPPORT INPUT VIDEO CODEC)
 
