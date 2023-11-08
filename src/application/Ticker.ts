@@ -3,6 +3,8 @@ import { LogColor } from 'logging/LogColor'
 import { Container } from './Container'
 import { Display } from './Display'
 import { Activity } from './Activity'
+import { Log } from 'logging/Log'
+import { Debug } from './Debug'
 
 /**
  * This class runs the base of the application. The current running conversion count is checked against
@@ -47,10 +49,10 @@ export class Ticker {
                     if (current_amount === 0) {
 
                         this.container.logger.flushBuffer()
-                        if (this.container.debug.toggle) {
-                            console.log('Debugging enabled. Writing debug file.')
+                        if (Debug.toggle) {
+                            Log.debug('Debugging enabled. Writing debug file.')
                             writeFileSync('container_debug.json', JSON.stringify(this.container, null, 4))
-                            console.log('Debug file written.')
+                            Log.debug('Debug file written.')
                             process.exit(0)
                         }
                         else process.exit(0)
@@ -71,9 +73,9 @@ export class Ticker {
 
             if (current_amount > this.container.appEncodingDecision.amount) {
 
-                this.container.logger.send(LogColor.fgRed, 'CURRENT TRANSCODES ARE GREATER THAN THE ALLOWED AMOUNT.')
-                this.container.logger.send(LogColor.fgRed, 'CURRENT ALLOWED AMOUNT: ' + this.container.appEncodingDecision.amount)
-                this.container.logger.send(LogColor.fgRed, 'CURRENT QUEUE:')
+                Log.send(LogColor.fgRed, 'CURRENT TRANSCODES ARE GREATER THAN THE ALLOWED AMOUNT.')
+                Log.send(LogColor.fgRed, 'CURRENT ALLOWED AMOUNT: ' + this.container.appEncodingDecision.amount)
+                Log.send(LogColor.fgRed, 'CURRENT QUEUE:')
                 Object.keys(this.container.converting).forEach(media => console.error('CURRENT FILE: ' + this.container.converting[media].file.name_modified))
                 process.exit(1)
 
@@ -106,7 +108,7 @@ export class Ticker {
 
             })
 
-            if (this.container.debug.toggle) this.display.printDebug()
+            if (Debug.toggle) this.display.printDebug()
             else this.display.print()
 
         }, 1000)
