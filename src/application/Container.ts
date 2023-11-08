@@ -55,7 +55,7 @@ export class Container {
 
                 if (file.endsWith('.mkv')) {
 
-                    Log.debug(LogColor.fgRed, 'Found file: ', file)
+                    Log.debug('Found file: ', file)
 
                     let media = new Media(file, this.settings.workingDir)
 

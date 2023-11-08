@@ -20,11 +20,11 @@ export class Log {
      */
     static send(color: (str: string) => string, ...messages: any[]): void {
 
-        console.log('called send')
+        Log.debug('called send')
 
         for (const message of messages) {
 
-            if (typeof (message) === 'object') console.log(message)
+            if (typeof (message) === 'object') console.log('obj', message)
             else stdout.write(color(message) + ' ')
 
         }
@@ -42,7 +42,7 @@ export class Log {
      */
     sendBuffer(color: (str: string) => string, length: number, message: string): void {
 
-        console.log('called sendbuffer, len ' + length)
+        Log.debug('called sendbuffer, len ' + length)
         if (false) console.log('SENDING BUFFER')
         if (false) console.log('BUFFER LENGTH: ' + length)
         if (false) console.log('BUFFER MESSAGE: ' + message)
@@ -115,7 +115,7 @@ export class Log {
 
     static debug(...messages: any[]): void {
 
-        if (Debug.toggle) this.send(LogColor.fgRed, messages)
+        if (Debug.toggle) this.send(LogColor.fgRed, ...messages)
 
     }
 
