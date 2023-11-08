@@ -110,7 +110,7 @@ export class UserArguments {
                         container.appEncodingDecision.useBitrate = true
                         break
 
-                    case '-C':
+                    case '-co':
                     case '--constrain':
                         container.appEncodingDecision.useConstrain = true
                         break
