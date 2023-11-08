@@ -39,7 +39,7 @@ export class ApplicationEncodingDecision {
     useHardwareEncode: boolean = false
     /** Overwrite existing file */
     overwrite: boolean = false
-    audioStreams: string[]
+    audioStreams: string[] = []
 
     constructor() { }
 
