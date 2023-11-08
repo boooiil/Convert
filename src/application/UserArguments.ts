@@ -114,12 +114,7 @@ export class UserArguments {
                     case '--constrain':
                         container.appEncodingDecision.useConstrain = true
                         break
-
-                    case '-v':
-                    case '--validate':
-                        container.appEncodingDecision.validate = true
-                        break
-
+                        
                     case '-crf':
                     case '--crf':
                         container.appEncodingDecision.crfOverride = parseInt(process.argv[index + 1])
