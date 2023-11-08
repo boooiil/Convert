@@ -11,6 +11,9 @@ Options:
 -a, --amount <number>
    Amount of media to convert at once.
 
+-as, --audiostreams <num1,num2,...>
+   Specify which audio streams to keep. (Default: All)
+
 -b, --bitrate
     Use bitrates instead of CRF. You can only use defined resolutions with this flag.
 
