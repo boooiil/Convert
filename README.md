@@ -4,7 +4,7 @@ Converts all MKV and AVI files in a root directory to MP4 files using ffmpeg uti
 ```
 Usage: node convert.js [...options]
 ```
-##Options
+## Options
 ```
 -a, --amount <number>
    Amount of media to convert at once.
